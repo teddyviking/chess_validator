@@ -39,7 +39,7 @@ class Board
 	attr_reader :cells
 	def initialize
 		@cells = {
-			a1: Bishop.new,
+			e5: Bishop.new,
 			a2: Rook.new,
 			a3: "knight"
 		}
@@ -61,7 +61,23 @@ class Rook < Piece
 end
 
 class Bishop < Piece
+	def check_moves(origin, destiny)
+		# binding.pry
+		horizontal_relation(origin, destiny) == vertical_relation(origin, destiny)
+	end
 
+	def horizontal_relation(origin, destiny)
+		# binding.pry
+		horizontal_relation = destiny[0].ord - origin[0].ord
+		horizontal_relation < 0 ? -horizontal_relation : horizontal_relation
+	end
+
+	def vertical_relation(origin, destiny)
+		vertical_relation = destiny[1].ord - origin[1].ord
+		vertical_relation < 0 ? -vertical_relation : vertical_relation
+	end
+
+	
 end
 
 
@@ -74,7 +90,7 @@ end
 
 
 
-movelist = [[:a2, :a3], [:a2, :a4], [:a2, :b7]]
+movelist = [[:e5, :b2], [:e5, :g7], [:e5, :b8], [:e5, :h2], [:e5, :e6]]
 board = Board.new
 
 
