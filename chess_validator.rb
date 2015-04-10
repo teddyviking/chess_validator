@@ -53,48 +53,6 @@ class Board
 		@cells = board_creator
 	end
 
-	# def set_board_from_txt(txt)
-	# 	txt_board = IO.read(txt)
-		
-	# 	lines = {}
-	# 	line_number = 8
-	# 	txt_board.split(/\n/).each do |line|
-	# 		lines[line_number] = line
-	# 		line_number -= 1
-	# 	end
-	# 	column_number = "a".ord
-	# 	lines.each do |key, line|
-	# 		line.split(" ").each do |cell|
-	# 			caca = column_number.chr + key.to_s	
-	# 			@cells[caca.to_sym] = cell
-	# 			column_number += 1
-	# 		end	
-	# 		column_number = "a".ord	
-	# 	end
-	# 	binding.pry
-
-	# 	lines.each do |line|
-	# 		line.split(", ").each_with_index do |cell, index|
-	# 			if cell[1] == "P" 
-	# 				@cells[] = Pawn.new(cell[0].to_sym)
-	# 			elsif cell[1] == "R"
-	# 				Rook.new(cell[0].to_sym)
-	# 			elsif cell[1] == "N"
-	# 				Knigth.new(cell[0].to_sym)
-	# 			elsif cell[1] == "B"
-	# 				Bishop.new(cell[0].to_sym)
-	# 			elsif cell[1] == "Q"
-	# 				Queen.new(cell[0].to_sym)
-	# 			elsif cell[1] == "K"
-	# 				King.new(cell[0].to_sym)
-	# 			end
-									
-	# 		end
-	# 	end
-
-
-	# end
-
 end
 
 module Checker
@@ -170,7 +128,6 @@ class Pawn < Piece
 			false
 		end
 	end
-
 end
 
 class Knigth < Piece
@@ -224,10 +181,44 @@ class BoardCreator
 
 	def create_key(column_number, initial_key, cell)
 		key = column_number.chr + initial_key.to_s	
-		@cells[key.to_sym] = cell
+		@cells[key.to_sym] = PieceCreator.new.create_piece(cell)
 	end
 end
 
+class PieceCreator
+
+	def create_piece(input)		
+		choose_piece(input, set_color(input))
+	end
+	def set_color(input)
+		if input[0] == "w"
+			:white
+		elsif input[0] == "b"
+			:black
+		end
+	end
+	
+
+	def choose_piece(cell, color)
+		case cell[1]
+		when "P"
+			Pawn.new(color)
+		when "R"
+			Rook.new(color)
+		when "N"
+			Knigth.new(color)
+		when "B"
+			Bishop.new(color)
+		when "Q"
+			Queen.new(color)
+		when "K"
+			King.new(color)
+		else
+			cell
+		end
+	end
+
+end
 class MovesList
 #create a list of moves from IO file
 	def initialize
@@ -235,6 +226,7 @@ class MovesList
 	end
 end
 
+king = PieceCreator.new.create_piece("wK")
 
 movelist = [[:e5, :b2], [:e5, :g7], [:e5, :b8], [:e5, :h2], [:e5, :e1], [:e5, :f1], [:e5, :e6], [:e5, :f6], [:e5, :d5]]
 knight_movelist = [[:e5, :d7], [:e5, :f7], [:e5, :g6], [:e5, :g4], [:e5, :f3], [:e5, :d3], [:e5, :c4], [:e5, :c6], [:e5, :b5]]
@@ -244,8 +236,8 @@ board.get_board(board_creator)
 
 
 
-# validator = ChessValidator.new
-# validator.check(board, movelist)
+validator = ChessValidator.new
+validator.check(board, movelist)
 
 binding.pry
 puts "The pry line"
