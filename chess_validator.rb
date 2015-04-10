@@ -21,7 +21,8 @@ class ChessValidator
 		piece = get_piece(board, move)
 		origin = get_origin(move)
 		destiny = get_destiny(move)
-		piece.check_moves(origin, destiny)
+		piece.check_moves(origin, destiny) unless piece.class == String
+		
 	end
 
 	def get_piece(board, move)
@@ -42,11 +43,57 @@ class Board
 	attr_reader :cells
 	def initialize
 		@cells = {
-			e5: Pawn.new,
-			a2: Rook.new,
-			a3: "knight"
+			# e5: Pawn.new(:w),
+			# a2: Rook.new(:b),
+			# a3: Knigth.new(:w)
 		}
 	end
+
+	def get_board(board_creator)
+		@cells = board_creator
+	end
+
+	# def set_board_from_txt(txt)
+	# 	txt_board = IO.read(txt)
+		
+	# 	lines = {}
+	# 	line_number = 8
+	# 	txt_board.split(/\n/).each do |line|
+	# 		lines[line_number] = line
+	# 		line_number -= 1
+	# 	end
+	# 	column_number = "a".ord
+	# 	lines.each do |key, line|
+	# 		line.split(" ").each do |cell|
+	# 			caca = column_number.chr + key.to_s	
+	# 			@cells[caca.to_sym] = cell
+	# 			column_number += 1
+	# 		end	
+	# 		column_number = "a".ord	
+	# 	end
+	# 	binding.pry
+
+	# 	lines.each do |line|
+	# 		line.split(", ").each_with_index do |cell, index|
+	# 			if cell[1] == "P" 
+	# 				@cells[] = Pawn.new(cell[0].to_sym)
+	# 			elsif cell[1] == "R"
+	# 				Rook.new(cell[0].to_sym)
+	# 			elsif cell[1] == "N"
+	# 				Knigth.new(cell[0].to_sym)
+	# 			elsif cell[1] == "B"
+	# 				Bishop.new(cell[0].to_sym)
+	# 			elsif cell[1] == "Q"
+	# 				Queen.new(cell[0].to_sym)
+	# 			elsif cell[1] == "K"
+	# 				King.new(cell[0].to_sym)
+	# 			end
+									
+	# 		end
+	# 	end
+
+
+	# end
 
 end
 
@@ -73,8 +120,8 @@ end
 class Piece
 	include Checker
 	attr_reader :moves
-	def initialize
-		@color = :w
+	def initialize(color)
+		@color = color
 	end
 end
 
@@ -104,7 +151,8 @@ class King < Piece
 end
 
 class Pawn < Piece
-	def initialize
+	def initialize(color)
+		super
 		@first_move = true
 	end
 
@@ -138,7 +186,47 @@ class Knigth < Piece
 end
 
 
+class BoardCreator
+	attr_reader :cells
+	def initialize
+		@cells = {}
+	end
+	def set_board_from_txt(txt)
+		txt_board = IO.read(txt)
+		create_columns(create_lines(txt_board))
+		@cells
+	end
 
+	def create_lines(txt_board)
+		lines = {}
+		line_number = 8
+		txt_board.split(/\n/).each do |line|
+			lines[line_number] = line
+			line_number -= 1
+		end
+		lines
+	end
+
+	def create_columns(lines)
+		column_number = "a".ord
+		lines.each do |key, line|
+			split_line(key, line, column_number)
+			column_number = "a".ord	
+		end
+	end
+
+	def split_line(key, line, column_number)
+		line.split(" ").each do |cell|
+			create_key(column_number, key, cell)
+			column_number += 1
+		end	
+	end
+
+	def create_key(column_number, initial_key, cell)
+		key = column_number.chr + initial_key.to_s	
+		@cells[key.to_sym] = cell
+	end
+end
 
 class MovesList
 #create a list of moves from IO file
@@ -148,11 +236,16 @@ class MovesList
 end
 
 
-
 movelist = [[:e5, :b2], [:e5, :g7], [:e5, :b8], [:e5, :h2], [:e5, :e1], [:e5, :f1], [:e5, :e6], [:e5, :f6], [:e5, :d5]]
 knight_movelist = [[:e5, :d7], [:e5, :f7], [:e5, :g6], [:e5, :g4], [:e5, :f3], [:e5, :d3], [:e5, :c4], [:e5, :c6], [:e5, :b5]]
+board_creator = BoardCreator.new.set_board_from_txt('simple_board.txt')
 board = Board.new
+board.get_board(board_creator)
 
 
-validator = ChessValidator.new
-validator.check(board, movelist)
+
+# validator = ChessValidator.new
+# validator.check(board, movelist)
+
+binding.pry
+puts "The pry line"
