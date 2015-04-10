@@ -39,7 +39,7 @@ class Board
 	attr_reader :cells
 	def initialize
 		@cells = {
-			e5: King.new,
+			e5: Pawn.new,
 			a2: Rook.new,
 			a3: "knight"
 		}
@@ -98,6 +98,28 @@ class King < Piece
 	def check_moves(origin, destiny)
 		horizontal_relation(origin, destiny) <= 1 && vertical_relation(origin, destiny) <= 1
 	end
+end
+
+class Pawn < Piece
+	def initialize
+		@first_move = true
+	end
+
+	def check_moves(origin, destiny)
+		vertical = destiny[1].ord - origin[1].ord
+		horizontal = destiny[0].ord - origin[0].ord
+		if vertical > 0 && horizontal == 0
+			unless @first_move
+				vertical == 1
+			else
+				@first_move = false
+				vertical == 1 || vertical == 2
+			end
+		else
+			false
+		end
+	end
+
 end
 
 class Knigth < Piece
