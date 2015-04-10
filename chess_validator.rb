@@ -1,3 +1,4 @@
+require 'pry'
 class ChessValidator
 	def initialize
 		
@@ -5,10 +6,18 @@ class ChessValidator
 
 	def check(board, movelist)
 		movelist.each do |move|
-			piece = get_piece(board, move)
-			destiny = get_destiny(move)
-			print_legality(piece, destiny)
+			if is_legal(board, move)
+				puts "LEGAL"
+			else
+				puts "ILEGAL"
+			end
 		end
+	end
+
+	def is_legal(board, move)
+		piece = get_piece(board, move)
+		destiny = get_destiny(move)
+		piece.check_moves(destiny)
 	end
 
 	def get_piece(board, move)
@@ -18,15 +27,6 @@ class ChessValidator
 	def get_destiny(move)
 		move[1]
 	end
-
-	def print_legality(piece, cell)
-		if piece.moves.include?(cell)
-			puts "LEGAL"
-		else
-			puts "ILEGAL"
-		end
-	end
-
 end
 
 class Board
@@ -34,8 +34,8 @@ class Board
 	attr_reader :cells
 	def initialize
 		@cells = {
-			a1: "pawn",
-			a2: Piece.new,
+			a1: Bishop.new,
+			a2: Rook.new,
 			a3: "knight"
 		}
 	end
@@ -54,11 +54,22 @@ class Piece
 #store the possible moves of a piece
 	attr_reader :moves
 	def initialize
-		@moves = [:a3]
+		@moves = :a3
 		@color
 	end
 end
 
+class Rook < Piece
+	def check_moves(destiny)
+		# binding.pry
+		@moves == destiny
+
+	end
+end
+
+class Bishop < Piece
+
+end
 
 
 class MovesList
