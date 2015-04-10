@@ -5,13 +5,16 @@ class ChessValidator
 	end
 
 	def check(board, movelist)
+		output = ""
 		movelist.each do |move|
 			if is_legal(board, move)
-				puts "#{move}: LEGAL"
+				output << "#{move}: LEGAL\n"
 			else
-				puts "#{move}: ILEGAL"
+				output << "#{move}: ILEGAL\n"
 			end
 		end
+		puts output
+		IO.write('simple_results.txt', output)
 	end
 
 	def is_legal(board, move)

@@ -1,0 +1,9 @@
+[:e5, :b2]: ILEGAL
+[:e5, :g7]: ILEGAL
+[:e5, :b8]: ILEGAL
+[:e5, :h2]: ILEGAL
+[:e5, :e1]: ILEGAL
+[:e5, :f1]: ILEGAL
+[:e5, :e6]: LEGAL
+[:e5, :f6]: ILEGAL
+[:e5, :d5]: ILEGAL
