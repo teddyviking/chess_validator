@@ -96,11 +96,10 @@ end
 
 class Knigth < Piece
 	def check_moves(origin, destiny)
-		# binding.pry
-		if horizontal_relation(origin, destiny) == 2 && vertical_relation(origin, destiny) == 1
-			true
-		elsif horizontal_relation(origin, destiny) == 1 && vertical_relation(origin, destiny) == 2
-			true
+		horizontal = horizontal_relation(origin, destiny)
+		vertical = vertical_relation(origin, destiny)
+		if horizontal != vertical
+			(horizontal == 2 || horizontal == 1) && (vertical == 1 || vertical == 2)
 		else
 			false
 		end
