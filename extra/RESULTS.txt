@@ -1,0 +1,12 @@
+[:a2, :a3]: LEGAL
+[:a2, :a4]: ILEGAL
+[:a2, :a5]: ILEGAL
+[:a7, :a6]: ILEGAL
+[:a7, :a5]: ILEGAL
+[:a7, :a4]: ILEGAL
+[:a7, :b6]: ILEGAL
+[:b8, :a6]: LEGAL
+[:b8, :c6]: LEGAL
+[:b8, :d7]: LEGAL
+[:e2, :e3]: LEGAL
+[:e3, :e2]: ILEGAL

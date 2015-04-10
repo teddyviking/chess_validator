@@ -17,11 +17,8 @@ knight_movelist = [[:e5, :d7], [:e5, :f7], [:e5, :g6], [:e5, :g4], [:e5, :f3], [
 board_creator = BoardCreator.new.set_board_from_txt('extra/simple_board.txt')
 board = Board.new
 board.get_board(board_creator)
-
-
-
 validator = ChessValidator.new
-validator.check(board, movelist, 'extra/RESULTS.txt')
+validator.check(board, MovesList.new.create_list_from_txt('extra/simple_moves.txt'), 'extra/RESULTS.txt')
 
 binding.pry
 puts "The pry line"
