@@ -16,12 +16,17 @@ class ChessValidator
 
 	def is_legal(board, move)
 		piece = get_piece(board, move)
+		origin = get_origin(move)
 		destiny = get_destiny(move)
-		piece.check_moves(destiny)
+		piece.check_moves(origin, destiny)
 	end
 
 	def get_piece(board, move)
 		board.cells[move[0]]
+	end
+
+	def get_origin(move)
+		move[0]
 	end
 
 	def get_destiny(move)
@@ -42,28 +47,16 @@ class Board
 
 end
 
-# class Cell
-# #store a piece
-# 	def initialize
-# 		@piece
-# 		@position
-# 	end
-# end
-
 class Piece
-#store the possible moves of a piece
 	attr_reader :moves
 	def initialize
-		@moves = :a3
 		@color
 	end
 end
 
 class Rook < Piece
-	def check_moves(destiny)
-		# binding.pry
-		@moves == destiny
-
+	def check_moves(origin, destiny)
+		destiny[0] == origin[0] || destiny[1] == origin[1]
 	end
 end
 
@@ -81,7 +74,7 @@ end
 
 
 
-movelist = [[:a2, :a3], [:a2, :a4]]
+movelist = [[:a2, :a3], [:a2, :a4], [:a2, :b7]]
 board = Board.new
 
 
