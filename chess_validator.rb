@@ -39,7 +39,7 @@ class Board
 	attr_reader :cells
 	def initialize
 		@cells = {
-			e5: Knigth.new,
+			e5: King.new,
 			a2: Rook.new,
 			a3: "knight"
 		}
@@ -94,6 +94,12 @@ class Queen < Piece
 	end
 end
 
+class King < Piece
+	def check_moves(origin, destiny)
+		horizontal_relation(origin, destiny) <= 1 && vertical_relation(origin, destiny) <= 1
+	end
+end
+
 class Knigth < Piece
 	def check_moves(origin, destiny)
 		horizontal = horizontal_relation(origin, destiny)
@@ -108,6 +114,7 @@ end
 
 
 
+
 class MovesList
 #create a list of moves from IO file
 	def initialize
@@ -117,10 +124,10 @@ end
 
 
 
-movelist = [[:e5, :b2], [:e5, :g7], [:e5, :b8], [:e5, :h2], [:e5, :e1], [:e5, :f1]]
+movelist = [[:e5, :b2], [:e5, :g7], [:e5, :b8], [:e5, :h2], [:e5, :e1], [:e5, :f1], [:e5, :e6], [:e5, :f6], [:e5, :d5]]
 knight_movelist = [[:e5, :d7], [:e5, :f7], [:e5, :g6], [:e5, :g4], [:e5, :f3], [:e5, :d3], [:e5, :c4], [:e5, :c6], [:e5, :b5]]
 board = Board.new
 
 
 validator = ChessValidator.new
-validator.check(board, knight_movelist)
+validator.check(board, movelist)
